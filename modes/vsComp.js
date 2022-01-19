@@ -4,10 +4,56 @@ const { Chess } = require('chess.js');
 const delay = ms => new Promise(resolve => setTimeout(resolve, ms));
 
 const vsComp = async engine => {
-    const chess = new Chess();
-    /*engine.getMove('rr4k1/7b/4p1pP/8/1q1n4/pPNP4/K1Q1BP2/3R3R w - - 4 29', 5000);
-    await delay(5500);
-    console.log(`best move: ${engine.bestMove} score: ${engine.score}`);*/
+    do {
+        const chess = new Chess();
+        console.log('Range: 1350 - 2850, Default: 2000');
+        const elo = rl.questionInt('Engine ELO: ', {defaultInput: 2000});
+        console.log('Default: 3 seconds');
+        const thinkTimeInput = rl.questionFloat('Number of seconds for engine to think: ', {defaultInput: 3});
+        const thinkTime = thinkTimeInput * 1000;
+        const colorIndex = rl.keyInSelect(['White', 'Black', 'Random'], 'Play as');
+        engine.setOptions({
+            UCI_LimitStrength: true,
+            UCI_Elo: elo
+        });
+        console.log('Input q as move at any time to quit.');
+        let i = colorIndex === 0 || (colorIndex === 2 && Math.random() > 0.5) ? 0 : 1;
+        game: do {
+            if (chess.in_checkmate()) {
+                const colorToMove = chess.turn();
+                console.log(`Checkmate. ${colorToMove === 'b' ? 'White' : 'Black'} wins.`);
+                break game;
+            }
+            if (chess.in_draw() || chess.in_stalemate() || chess.in_threefold_repetition()) {
+                console.log('Game is drawn.');
+                break game;
+            }
+            if (i % 2 === 0) {
+                console.log(chess.ascii());
+                player: do {
+                    let proposedMove = rl.question('Move: ');
+                    if (proposedMove === 'q') {
+                        console.log('Player resigned.');
+                        break game;
+                    }
+                    if (chess.moves().indexOf(proposedMove) === -1) console.log(`${proposedMove} is an invalid move.`);
+                    else {
+                        chess.move(proposedMove);
+                        break player;
+                    }
+                } while (true);
+            } else {
+                engine.getMove(chess.fen(), thinkTime);
+                await delay(thinkTime + 500);
+                chess.move(engine.bestMove, {sloppy: true});
+                let history = chess.history();
+                console.log(`Move: ${history[history.length - 1]}`);
+            }
+            i++;
+        } while (true);
+        const bool = rl.keyInYN('Play again?');
+        if (!bool) process.exit(1);
+    } while (true);
 }
 
 module.exports = vsComp;

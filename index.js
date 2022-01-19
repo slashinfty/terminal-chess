@@ -27,4 +27,5 @@ const start = () => {
     const index = rl.keyInSelect(['vs Comp', 'vs Human'], 'Select');
     if (index === 0) vsComp(myEngine);
     else if (index === 1) vsHuman(myEngine);
+    else process.exit(1);
 }

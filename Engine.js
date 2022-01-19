@@ -17,11 +17,15 @@ class Engine {
     }
 
     post(message) {
+        if (!this.uciok) this.engine.postMessage('uci');
         this.engine.postMessage(message);
+    }
+    
+    setOptions(options) {
+        for (const opt in options) this.post(`option name ${opt} value ${options[opt]}`);
     }
 
     getMove(position, thinkTime) {
-        if (!this.uciok) this.post('uci');
         this.post(`position fen ${position}`);
         this.post('go infinite');
         setTimeout(() => this.post('stop'), thinkTime);
