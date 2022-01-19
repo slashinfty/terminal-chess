@@ -1,0 +1,25 @@
+{
+  "name": "terminal-chess",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start": "node --experimental-wasm-threads --experimental-wasm-simd index.js",
+    "test": "node --experimental-wasm-threads --experimental-wasm-simd test.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/slashinfty/terminal-chess.git"
+  },
+  "author": "Matt Braddock",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/slashinfty/terminal-chess/issues"
+  },
+  "homepage": "https://github.com/slashinfty/terminal-chess#readme",
+  "dependencies": {
+    "chess.js": "^0.12.0",
+    "readline-sync": "^1.4.10",
+    "stockfish": "^14.1.0"
+  }
+}
