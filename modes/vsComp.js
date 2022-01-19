@@ -46,8 +46,7 @@ const vsComp = async engine => {
                 engine.analyze(chess.fen(), thinkTime);
                 await delay(thinkTime + 500);
                 chess.move(engine.bestMove, {sloppy: true});
-                let history = chess.history();
-                console.log(`Move: ${history[history.length - 1]}`);
+                console.log(`Move: ${[...chess.history()].pop()}`);
             }
             i++;
         } while (true);

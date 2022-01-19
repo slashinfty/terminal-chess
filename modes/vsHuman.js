@@ -33,7 +33,9 @@ const vsHuman = async engine => {
                     thinkTime *= 1000;
                     engine.analyze(chess.fen(), thinkTime);
                     await delay(thinkTime + 500);
-                    console.log(`Best move: ${engine.bestMove} Score: ${engine.score}`);
+                    chess.move(engine.bestMove, {sloppy: true});
+                    console.log(`Best move: ${[...chess.history()].pop()} Score: ${engine.score}`);
+                    chess.undo();
                 } else {
                     console.log('Game over.');
                     break game;
