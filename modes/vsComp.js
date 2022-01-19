@@ -11,7 +11,7 @@ const vsComp = async engine => {
         console.log('Default: 3 seconds');
         const thinkTimeInput = rl.questionFloat('Number of seconds for engine to think: ', {defaultInput: 3});
         const thinkTime = thinkTimeInput * 1000;
-        const colorIndex = rl.keyInSelect(['White', 'Black', 'Random'], 'Play as');
+        const colorIndex = rl.keyInSelect(['White', 'Black', 'Random'], 'Play as', {cancel: false});
         engine.setOptions({
             UCI_LimitStrength: true,
             UCI_Elo: elo
@@ -43,7 +43,7 @@ const vsComp = async engine => {
                     }
                 } while (true);
             } else {
-                engine.getMove(chess.fen(), thinkTime);
+                engine.analyze(chess.fen(), thinkTime);
                 await delay(thinkTime + 500);
                 chess.move(engine.bestMove, {sloppy: true});
                 let history = chess.history();
@@ -51,6 +51,12 @@ const vsComp = async engine => {
             }
             i++;
         } while (true);
+        const save = rl.keyInYN('Save PGN?');
+        if (save) {
+            const path = require('path').resolve(__dirname, `../${new Date(Date.now()).toISOString()}.pgn`);
+            require('fs').writeFileSync(path, chess.pgn());
+            console.log(`Saved at ${path}`);
+        }
         const bool = rl.keyInYN('Play again?');
         if (!bool) process.exit(1);
     } while (true);

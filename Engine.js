@@ -25,7 +25,7 @@ class Engine {
         for (const opt in options) this.post(`option name ${opt} value ${options[opt]}`);
     }
 
-    getMove(position, thinkTime) {
+    analyze(position, thinkTime) {
         this.post(`position fen ${position}`);
         this.post('go infinite');
         setTimeout(() => this.post('stop'), thinkTime);

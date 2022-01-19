@@ -7,6 +7,7 @@ const vsHuman = require('./modes/vsHuman');
 let Stockfish;
 let myEngine;
 
+// Set up Stockfish
 try {
     const INIT_ENGINE = require("stockfish");
     const wasmPath = require("path").join(__dirname, "node_modules/stockfish/src/stockfish.wasm");
@@ -24,7 +25,7 @@ try {
 } catch (e) {}
 
 const start = () => {
-    const index = rl.keyInSelect(['vs Comp', 'vs Human'], 'Select');
+    const index = rl.keyInSelect(['vs Comp', 'vs Human'], 'Select', {cancel: 'Quit'});
     if (index === 0) vsComp(myEngine);
     else if (index === 1) vsHuman(myEngine);
     else process.exit(1);
