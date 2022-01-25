@@ -9,8 +9,8 @@ const vsComp = async engine => {
         console.log('Range: 1350 - 2850, Default: 2000');
         const elo = rl.questionInt('Engine ELO: ', {defaultInput: 2000});
         console.log('Default: 3 seconds');
-        const thinkTimeInput = rl.questionFloat('Number of seconds for engine to think: ', {defaultInput: 3});
-        const thinkTime = thinkTimeInput * 1000;
+        let thinkTime = rl.questionFloat('Number of seconds for engine to think: ', {defaultInput: 3});
+        thinkTime *= 1000;
         const colorIndex = rl.keyInSelect(['White', 'Black', 'Random'], 'Play as', {cancel: false});
         engine.setOptions({
             UCI_LimitStrength: true,

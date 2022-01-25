@@ -31,7 +31,7 @@ const vsHuman = async engine => {
                     console.log('Default: 3 seconds');
                     let thinkTime = rl.questionFloat('Number of seconds for engine to think: ', {defaultInput: 3});
                     thinkTime *= 1000;
-                    engine.analyze(chess.fen(), thinkTime);
+                    engine.analyze(chess.fen(), thinkTime, true);
                     await delay(thinkTime + 500);
                     chess.move(engine.bestMove, {sloppy: true});
                     console.log(`Best move: ${[...chess.history()].pop()} Score: ${engine.score}`);
